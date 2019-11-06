@@ -118,7 +118,7 @@ int createRule(int ruleNum)
 
 int main(int argc, char const *argv[])
 {
-	int n = 11;
+	int n = 3;
 	int rule[8] = {0,0,0,1,1,1,1,0};
 	int generationArray[n];
 	int nextGen[n];
@@ -142,7 +142,7 @@ int main(int argc, char const *argv[])
 
 	for (int i = 0; i < numGen; ++i)
 	{
-		for (int j = 1; j < n; ++j)
+		for (int j = 0; j < n; ++j)
 		{
 			int result = compare(rule, j, generationArray, n);
 			//printf("RESULT: %d\n", result);
@@ -155,4 +155,3 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
-//array[decimal] = 1
