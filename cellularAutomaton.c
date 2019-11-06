@@ -6,6 +6,7 @@ FUNCTIONS:
 **/
 #include <stdio.h>
 #include <string.h>
+
 int compare(int rule[], int i, int array[])
 {
 	int c1[3] = {0,0,0};
@@ -15,11 +16,11 @@ int compare(int rule[], int i, int array[])
 	int c5[3] = {1,0,0};
 	int c6[3] = {1,0,1};
 	int c7[3] = {1,1,0};
-	int c8[3] = {1,0,0};
+	int c8[3] = {1,1,1};
 
 	int compArray[3] = {array[i-1], array[i], array[i+1]};
 
-	printf("%d %d %d", compArray[0], compArray[1], compArray[2]);
+	//printf("%d %d %d :", compArray[0], compArray[1], compArray[2]);
 
 	if (memcmp(c1, compArray, sizeof(c1))==0)
 	{
@@ -59,42 +60,58 @@ int compare(int rule[], int i, int array[])
 	}
 }
 
+
+void printGeneration(int array[], int width)
+{
+	for (int i = 0; i < width; ++i)
+		{
+			printf("%d", array[i]);
+		}
+	printf("\n");
+}
+
+void swap_arrays(int *y, int *z, int width)
+{
+    int x,temp;
+
+    for(x=0;x<width;x++)
+    {
+        temp = y[x];
+        y[x] = z[x];
+        z[x] = temp;
+    }
+}
+
 int main(int argc, char const *argv[])
 {
 	int n = 30;
 	int rule[8] = {0,0,0,1,1,1,1,0};
 	int generationArray[n];
 	int nextGen[n];
+	int numGen = 2;
 
+	//set all items in array to 0
 	for (int i = 0; i < n; ++i)
 	{
 		generationArray[i] = 0;
 		nextGen[i] = 0;
 	}
 
-	
 	generationArray[n/2] = 1;
 
-	//create next gen.
-	for (int i = 1; i < n; ++i)
-	{
-		int result = compare(rule, i, generationArray);
-		printf("RESULT: %d\n", result);
-		nextGen[i] = result;
-	}
+	printGeneration(generationArray, n);
 
-	//print first gen
-	for (int i = 0; i < n; ++i)
+	for (int i = 0; i < numGen; ++i)
 	{
-		printf("%d", generationArray[i]);
+		for (int j = 1; j < n; ++j)
+		{
+			int result = compare(rule, j, generationArray);
+			//printf("RESULT: %d\n", result);
+			nextGen[j] = result;
+		}
+		swap_arrays(generationArray, nextGen, n);
+		printGeneration(generationArray, n);
 	}
-	printf("\n");
-	//print second gen
-	for (int i = 0; i < n; ++i)
-	{
-		printf("%d", nextGen[i]);
-	}
-	printf("\n");
 	
 	return 0;
 }
