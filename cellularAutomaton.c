@@ -5,6 +5,11 @@ FUNCTIONS:
 3. PRINT GENERATION(HEIGHT, WIDTH, RULE)
 **/
 
+//TO-DO: INPUT VERIFICATION - All inputs are integers. function which checks if an input is an int with upper and lower bounds.
+// 		 FIRST GENERATION EDITING
+//		 SAVE OUTPUT TO FILE
+
+
 #include <stdio.h>
 #include <string.h>
 
@@ -117,7 +122,8 @@ void swap_arrays(int *y, int *z, int width)
     }
 }
 
-//function which converts integer, into binary number and changes binary number into list of integers.
+//function which converts integer, into binary number array
+//Some parts of the code taken from https://www.geeksforgeeks.org/program-decimal-binary-conversion/
 int createRule(int *array, int number)
 {
 
@@ -135,6 +141,7 @@ int createRule(int *array, int number)
 	}
 }
 
+//Function for printing an array. Used when debugging the program.
 void print(int array[])
 {
 	for (int i = 7; i >= 0; --i)
@@ -166,8 +173,6 @@ void genPreset()
 	}
 	//sets centre of array to 1
 	generationArray[n/2] = 1;
-
-	print(rule);
 
 	//prints the starting generation
 	printGeneration(generationArray, n);
