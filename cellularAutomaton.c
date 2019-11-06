@@ -4,9 +4,11 @@ FUNCTIONS:
 2. COMPARE(RULE, I, ARRAY) returns 1 or 0; 
 3. PRINT GENERATION(HEIGHT, WIDTH, RULE)
 **/
+
 #include <stdio.h>
 #include <string.h>
 
+//function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
 int compare(int rule[], int i, int array[])
 {
 	int c1[3] = {0,0,0};
@@ -60,7 +62,7 @@ int compare(int rule[], int i, int array[])
 	}
 }
 
-
+//Function used to print out generations
 void printGeneration(int array[], int width)
 {
 	for (int i = 0; i < width; ++i)
@@ -70,6 +72,7 @@ void printGeneration(int array[], int width)
 	printf("\n");
 }
 
+//Function used to swap arrays. Used to set the nextGen to the current generation
 void swap_arrays(int *y, int *z, int width)
 {
     int x,temp;
@@ -82,13 +85,20 @@ void swap_arrays(int *y, int *z, int width)
     }
 }
 
+//function which converts integer, into b
+int createRule(int ruleNum)
+{
+
+}
+
 int main(int argc, char const *argv[])
 {
-	int n = 30;
+	int n = 50;
 	int rule[8] = {0,0,0,1,1,1,1,0};
 	int generationArray[n];
 	int nextGen[n];
-	int numGen = 2;
+	int numGen = 9;
+
 
 	//set all items in array to 0
 	for (int i = 0; i < n; ++i)
@@ -96,7 +106,7 @@ int main(int argc, char const *argv[])
 		generationArray[i] = 0;
 		nextGen[i] = 0;
 	}
-
+	//sets centre of array to 1
 	generationArray[n/2] = 1;
 
 	printGeneration(generationArray, n);
@@ -115,3 +125,4 @@ int main(int argc, char const *argv[])
 	
 	return 0;
 }
+
