@@ -52,35 +52,35 @@ int compare(int rule[], int i, int array[], int width)
 
 	if (memcmp(c1, compArray, sizeof(c1))==0)
 	{
-		return rule[7];
+		return rule[0];
 	}
 	else if (memcmp(c2, compArray, sizeof(c1))==0)
 	{
-		return rule[6];
+		return rule[1];
 	}
 	else if (memcmp(c3, compArray, sizeof(c1))==0)
 	{
-		return rule[5];
+		return rule[2];
 	}
 	else if (memcmp(c4, compArray, sizeof(c1))==0)
 	{
-		return rule[4];
+		return rule[3];
 	}
 	else if (memcmp(c5, compArray, sizeof(c1))==0)
 	{
-		return rule[3];
+		return rule[4];
 	}
 	else if (memcmp(c6, compArray, sizeof(c1))==0)
 	{
-		return rule[2];
+		return rule[5];
 	}
 	else if (memcmp(c7, compArray, sizeof(c1))==0)
 	{
-		return rule[1];
+		return rule[6];
 	}
 	else if (memcmp(c8, compArray, sizeof(c1))==0)
 	{
-		return rule[0];
+		return rule[7];
 	}
 	else
 	{
@@ -117,29 +117,46 @@ void swap_arrays(int *y, int *z, int width)
     }
 }
 
-// //function which converts integer, into binary number and changes binary number into list of integers.
-// void createRule(int ruleNum int *rule)
-// {
-// 	//convert integer into string.
-// 	//sets rule to string index
+//function which converts integer, into binary number and changes binary number into list of integers.
+int createRule(int *array, int number)
+{
 
+	for (int i = 0; i < 8; ++i)
+	{
+		int remainder = number >> i;
+		if (remainder & 1)
+		{
+			array[i] = 1;
+		}
+		else
+		{
+			array[i] = 0;
+		}
+	}
+}
 
-// }
+void print(int array[])
+{
+	for (int i = 7; i >= 0; --i)
+	{
+		printf("%d\n", array[i]);
+	}
+}
 
 //Preset generation
 void genPreset()
 {
 	printf("\n");
 	printf("Using rule 30\n");
-	printf("Using width 30\n");
-	printf("displaying 10 generations\n");
+	printf("Using width 43\n");
+	printf("displaying 22 generations\n");
 	printf("\n");
 
-	int n = 30;
-	int rule[8] = {0,0,0,1,1,1,1,0};
+	int n = 43;
+	int rule[8] = {0,1,1,1,1,0,0,0};
 	int generationArray[n];
 	int nextGen[n];
-	int numGen = 19;
+	int numGen = 21;
 
 	//set all items in array to 0
 	for (int i = 0; i < n; ++i)
@@ -149,6 +166,8 @@ void genPreset()
 	}
 	//sets centre of array to 1
 	generationArray[n/2] = 1;
+
+	print(rule);
 
 	//prints the starting generation
 	printGeneration(generationArray, n);
@@ -166,6 +185,8 @@ void genPreset()
 	}
 }
 
+
+
 //user Generation
 void userGeneration()
 {
@@ -173,7 +194,7 @@ void userGeneration()
 	int width;
 	int numberGenerations;
 	int ruleInteger;
-	int rule[8] = {0,0,0,0,0,0,0,0};
+	int ruleSet[8] = {0,0,0,0,0,0,0,0};
 	int generationArray[width];
 	int nextGen[width];
 
@@ -184,6 +205,8 @@ void userGeneration()
 	scanf("%d", &width);
 	printf("Please enter the amount of generations to display: ");
 	scanf("%d", &numberGenerations);
+
+	numberGenerations = numberGenerations -1;
 	//Get input for starting generation
 
 	//populate arrays
@@ -195,15 +218,17 @@ void userGeneration()
 	}
 
 	//set rule
-	//createRule(ruleInteger, rule);
+	createRule(ruleSet, ruleInteger);
+	print(ruleSet);
 
+	generationArray[width/2] = 1;
 	printGeneration(generationArray, width);
 
 	for (int i = 0; i < numberGenerations; ++i)
 	{
 		for (int j = 0; j < width; ++j)
 		{
-			int result = compare(rule, j, generationArray, width);
+			int result = compare(ruleSet, j, generationArray, width);
 			//printf("RESULT: %d\n", result);
 			nextGen[j] = result;
 		}
@@ -216,24 +241,28 @@ void userGeneration()
 int main(int argc, char const *argv[])
 {
 	int userOptions;
-	
-	printf("Please enter a choice\n");
-	printf("1.Generate preset automaton\n");
-	printf("2.Generate your own \n");
-	scanf("%d", &userOptions);
-	if (userOptions == 1)
-	{
-		genPreset();
+	while(1){
+		printf("Please enter a choice\n");
+		printf("1.Generate preset automaton\n");
+		printf("2.Generate your own \n");
+		printf("0. Exit\n");
+		scanf("%d", &userOptions);
+		if (userOptions == 1)
+		{
+			genPreset();
+		}
+		else if(userOptions == 2)
+		{
+			userGeneration();
+		}
+		else if (userOptions == 0)
+		{
+			break;
+		}
+		else{
+			printf("Please try again and enter a valid option\n");
+		}
 	}
-	else if(userOptions == 2)
-	{
-		//does nothing right now
-		userGeneration();
-	}else{
-		printf("Please try again and enter a valid option\n");
-	}
-
-	
 	return 0;
 }
 
