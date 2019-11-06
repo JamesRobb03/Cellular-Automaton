@@ -85,10 +85,14 @@ void swap_arrays(int *y, int *z, int width)
     }
 }
 
-//function which converts integer, into b
+//function which converts integer, into binary number and changes binary number into list of integers.
 int createRule(int ruleNum)
 {
+	//convert integer into string.
+	//sets rule to string index
+	//returns rule
 
+	
 }
 
 int main(int argc, char const *argv[])
