@@ -8,7 +8,12 @@ FUNCTIONS:
 #include <stdio.h>
 #include <string.h>
 
+#define WSQUARE "\u2610"
+#define XSQUARE "\u2612"
+
+
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
+//basically just lots of if statements. must be a better way to do it.
 int compare(int rule[], int i, int array[], int width)
 {
 	int c1[3] = {0,0,0};
@@ -88,7 +93,13 @@ void printGeneration(int array[], int width)
 {
 	for (int i = 0; i < width; ++i)
 		{
-			printf("%d", array[i]);
+			if (array[i]==1)
+			{
+				printf("%s ",XSQUARE);
+			}
+			else{
+				printf("%s ",WSQUARE);
+			}
 		}
 	printf("\n");
 }
@@ -106,27 +117,29 @@ void swap_arrays(int *y, int *z, int width)
     }
 }
 
-//function which converts integer, into binary number and changes binary number into list of integers.
-int createRule(int ruleNum)
+// //function which converts integer, into binary number and changes binary number into list of integers.
+// void createRule(int ruleNum int *rule)
+// {
+// 	//convert integer into string.
+// 	//sets rule to string index
+
+
+// }
+
+//Preset generation
+void genPreset()
 {
-	//convert integer into string.
-	//sets rule to string index
-	//returns rule
+	printf("\n");
+	printf("Using rule 30\n");
+	printf("Using width 30\n");
+	printf("displaying 10 generations\n");
+	printf("\n");
 
-
-}
-
-int main(int argc, char const *argv[])
-{
-	int n = 3;
+	int n = 30;
 	int rule[8] = {0,0,0,1,1,1,1,0};
 	int generationArray[n];
 	int nextGen[n];
-	int numGen = 9;
-
-	//printf("Please enter a choice\n");
-	//printf("1.Print preset automaton\n");
-	//printf("2. \n");
+	int numGen = 19;
 
 	//set all items in array to 0
 	for (int i = 0; i < n; ++i)
@@ -151,6 +164,75 @@ int main(int argc, char const *argv[])
 		swap_arrays(generationArray, nextGen, n);
 		printGeneration(generationArray, n);
 	}
+}
+
+//user Generation
+void userGeneration()
+{
+	//Starter variables.
+	int width;
+	int numberGenerations;
+	int ruleInteger;
+	int rule[8] = {0,0,0,0,0,0,0,0};
+	int generationArray[width];
+	int nextGen[width];
+
+	//User Input
+	printf("Please enter the rule you wish to use: ");
+	scanf("%d", &ruleInteger);
+	printf("Please enter a width: ");
+	scanf("%d", &width);
+	printf("Please enter the amount of generations to display: ");
+	scanf("%d", &numberGenerations);
+	//Get input for starting generation
+
+	//populate arrays
+	//set all items in array to 0
+	for (int i = 0; i < width; ++i)
+	{
+		generationArray[i] = 0;
+		nextGen[i] = 0;
+	}
+
+	//set rule
+	//createRule(ruleInteger, rule);
+
+	printGeneration(generationArray, width);
+
+	for (int i = 0; i < numberGenerations; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			int result = compare(rule, j, generationArray, width);
+			//printf("RESULT: %d\n", result);
+			nextGen[j] = result;
+		}
+		swap_arrays(generationArray, nextGen, width);
+		printGeneration(generationArray, width);
+	}
+
+}
+
+int main(int argc, char const *argv[])
+{
+	int userOptions;
+	
+	printf("Please enter a choice\n");
+	printf("1.Generate preset automaton\n");
+	printf("2.Generate your own \n");
+	scanf("%d", &userOptions);
+	if (userOptions == 1)
+	{
+		genPreset();
+	}
+	else if(userOptions == 2)
+	{
+		//does nothing right now
+		userGeneration();
+	}else{
+		printf("Please try again and enter a valid option\n");
+	}
+
 	
 	return 0;
 }
