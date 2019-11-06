@@ -9,7 +9,7 @@ FUNCTIONS:
 #include <string.h>
 
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
-int compare(int rule[], int i, int array[])
+int compare(int rule[], int i, int array[], int width)
 {
 	int c1[3] = {0,0,0};
 	int c2[3] = {0,0,1};
@@ -20,7 +20,28 @@ int compare(int rule[], int i, int array[])
 	int c7[3] = {1,1,0};
 	int c8[3] = {1,1,1};
 
-	int compArray[3] = {array[i-1], array[i], array[i+1]};
+	int first;
+	int third;
+
+	//check if array[i-1] is out of bounds
+	if (array[i-1] == 0 || array[i-1] == 1)
+	{
+		first = array[i-1];
+	}else
+	{
+		first = array[width-1];
+	}
+
+	//check if array[i+1] is out of bounds
+	if (array[i+1] == 0 || array[i+1] == 1)
+	{
+		third = array[i+1];
+	}else
+	{
+		third = array[0];
+	}
+
+	int compArray[3] = {first, array[i], third};
 
 	//printf("%d %d %d :", compArray[0], compArray[1], compArray[2]);
 
@@ -92,17 +113,20 @@ int createRule(int ruleNum)
 	//sets rule to string index
 	//returns rule
 
-	
+
 }
 
 int main(int argc, char const *argv[])
 {
-	int n = 50;
+	int n = 11;
 	int rule[8] = {0,0,0,1,1,1,1,0};
 	int generationArray[n];
 	int nextGen[n];
 	int numGen = 9;
 
+	//printf("Please enter a choice\n");
+	//printf("1.Print preset automaton\n");
+	//printf("2. \n");
 
 	//set all items in array to 0
 	for (int i = 0; i < n; ++i)
@@ -113,13 +137,14 @@ int main(int argc, char const *argv[])
 	//sets centre of array to 1
 	generationArray[n/2] = 1;
 
+	//prints the starting generation
 	printGeneration(generationArray, n);
 
 	for (int i = 0; i < numGen; ++i)
 	{
 		for (int j = 1; j < n; ++j)
 		{
-			int result = compare(rule, j, generationArray);
+			int result = compare(rule, j, generationArray, n);
 			//printf("RESULT: %d\n", result);
 			nextGen[j] = result;
 		}
@@ -130,3 +155,4 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
+//array[decimal] = 1
