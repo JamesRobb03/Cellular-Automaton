@@ -10,7 +10,9 @@ FUNCTIONS:
 //		 SAVE OUTPUT TO FILE
 
 
+#include <sys/ioctl.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 
 #define WSQUARE "\u2610"
@@ -150,6 +152,82 @@ void print(int array[])
 	}
 }
 
+void setRule(int *pInt)
+{
+	do
+	{
+		printf("Please enter rule between %d and %d: ", 0, 255);
+		scanf("%d", pInt);
+	} while ((*pInt < 0) || (*pInt > 255));
+
+	printf("You have set the rule to be equal to %d\n", *pInt);
+}
+
+void setNumberOfGenerations(int *pInt)
+{
+	do
+	{
+		printf("Please enter desired number of generations equal or greater than %d: ", 1);
+		scanf("%d", pInt);
+	} while ((*pInt < 1));
+
+	printf("You have set the number of generations to be equal to %d\n", *pInt);
+}
+
+void setWidht(int *pInt)
+{
+	struct winsize w;
+
+	char givePermission = '\0';
+    
+	do
+	{
+		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+		printf ("Your terminal window can fit a grid without problem with width up to %d.\n", (w.ws_col/2));
+		printf("Please enter width of a grid greater or equal to %d: ", 3);
+		scanf("%d", pInt);
+
+		if (*pInt > (w.ws_col/2))
+		{
+			printf("[WARNING] Desired width of %d is greater than window's size!\n", *pInt);	
+			do
+			{
+				printf("Grid may not display properly. Continue? [Y/n]: ");
+				scanf(" %c", &givePermission);
+
+				if (givePermission == 'Y')
+				{
+					break;
+				}
+				else if (givePermission == 'N')
+				{
+					break;
+				}
+				else if (givePermission == 'n')
+				{
+					break;
+				}
+				else
+				{
+					givePermission = '\0';
+				}
+			} while (givePermission == '\0');
+		}
+		else if ((*pInt >= 3) && (*pInt <= (w.ws_col/2)))
+		{
+			givePermission = 'Y';
+		}
+		else
+		{
+			givePermission = '\0';
+		}
+
+
+	} while (givePermission != 'Y');
+
+	printf("You have set the width of the grid to be equal to %d\n", *pInt);
+}
+
 //Preset generation
 void genPreset()
 {
@@ -204,12 +282,11 @@ void userGeneration()
 	int nextGen[width];
 
 	//User Input
-	printf("Please enter the rule you wish to use: ");
-	scanf("%d", &ruleInteger);
-	printf("Please enter a width: ");
-	scanf("%d", &width);
-	printf("Please enter the amount of generations to display: ");
-	scanf("%d", &numberGenerations);
+	setRule(&ruleInteger);
+	setWidht(&width);
+	setNumberOfGenerations(&numberGenerations);
+
+
 
 	numberGenerations = numberGenerations -1;
 	//Get input for starting generation
@@ -224,7 +301,6 @@ void userGeneration()
 
 	//set rule
 	createRule(ruleSet, ruleInteger);
-	print(ruleSet);
 
 	generationArray[width/2] = 1;
 	printGeneration(generationArray, width);
@@ -247,10 +323,10 @@ int main(int argc, char const *argv[])
 {
 	int userOptions;
 	while(1){
-		printf("Please enter a choice\n");
 		printf("1.Generate preset automaton\n");
 		printf("2.Generate your own \n");
 		printf("0. Exit\n");
+		printf("Please enter a choice: ");
 		scanf("%d", &userOptions);
 		if (userOptions == 1)
 		{
