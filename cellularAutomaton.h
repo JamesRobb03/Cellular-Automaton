@@ -46,5 +46,7 @@ void getInitDecimal(int *pInt, int width);
 
 void setInitArrayBinary(int *initStateArr, int width);
 
+int saveAutomation(int array[], int width);
+
 
 
