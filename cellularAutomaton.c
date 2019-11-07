@@ -1,15 +1,3 @@
-/**
-FUNCTIONS:
-1. GET RULE(DECIMAL TO BINARY(INTEGER))
-2. COMPARE(RULE, I, ARRAY) returns 1 or 0; 
-3. PRINT GENERATION(HEIGHT, WIDTH, RULE)
-**/
-
-//TO-DO: INPUT VERIFICATION - All inputs are integers. function which checks if an input is an int with upper and lower bounds.
-// 		 FIRST GENERATION EDITING
-//		 SAVE OUTPUT TO FILE
-
-
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -285,8 +273,7 @@ void genPreset()
 
 	//prints the starting generation
 	printGeneration(generationArray, n);
-	// TOTO
-	// saveAutomation(generationArray, n);
+	saveAutomation(generationArray, n);
 
 	for (int i = 0; i < numGen; ++i)
 	{
@@ -298,8 +285,8 @@ void genPreset()
 		}
 		swap_arrays(generationArray, nextGen, n);
 		printGeneration(generationArray, n);
-		// TODO
-		// saveAutomation(generationArray, n);
+		
+		saveAutomation(generationArray, n);
 	}
 }
 
@@ -341,8 +328,8 @@ void userGeneration()
 	createRule(ruleSet, ruleInteger);
 
 	printGeneration(generationArray, width);
-	// TODO
-	// saveAutomation(generationArray, width);
+	
+	saveAutomation(generationArray, width);
 
 	for (int i = 0; i < numberGenerations; ++i)
 	{
@@ -354,8 +341,8 @@ void userGeneration()
 		}
 		swap_arrays(generationArray, nextGen, width);
 		printGeneration(generationArray, width);
-		// TODO
-		// saveAutomation(generationArray, width);
+		
+		saveAutomation(generationArray, width);
 	}
 
 }
@@ -465,32 +452,32 @@ void setInitArrayBinary(int *generationArray, int width)
 
 }
 
-// TODO
-// //function which saves automation to a text file.
-// int saveAutomation(int array[], int width[])	
-// {
-//     FILE *file;
-//     file = fopen("savedAutomation.txt", "a");
-//     char newLine = '\n';
 
-// 	if (array == NULL)	{
-// 		printf("ERROR");
-// 	}
-// 	if (file != NULL)	{
-// 		for (int i = 0; i < width; ++i)
-// 		{
-// 			if (array[i]==1)
-// 			{
-// 				fputs(XSQUARE, file);
-// 			}
-// 			else{
-// 				fputs(WSQUARE, file);
-// 			}
-// 		}
-// 	fputc(newLine, file);
-// 	}	
+//function which saves automation to a text file.
+int saveAutomation(int array[], int width)	
+{
+    FILE *file;
+    file = fopen("savedAutomation.txt", "a");
+    char newLine = '\n';
+
+	if (array == NULL)	{
+		printf("ERROR");
+	}
+	if (file != NULL)	{
+		for (int i = 0; i < width; ++i)
+		{
+			if (array[i]==1)
+			{
+				fputs(XSQUARE, file);
+			}
+			else{
+				fputs(WSQUARE, file);
+			}
+		}
+	fputc(newLine, file);
+	}	
 	
-//     fclose(file);
+    fclose(file);
 
-//     return 0;
-// }
+    return 0;
+}
