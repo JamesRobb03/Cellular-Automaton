@@ -24,7 +24,7 @@ int getDecimalFromNLongBinary(int width)
 	return output;
 }
 
-void setInitState(int *pInt, int width)
+void setInitDecimal(int *pInt, int width)
 {
 	int maxInt = getDecimalFromNLongBinary(width);
 
@@ -37,7 +37,7 @@ void setInitState(int *pInt, int width)
 	printf("You have set the initial state to be equal to %d\n", *pInt);
 }
 
-void populateWithBinary(int *initStateArr, int width)
+void setInitArrayBinary(int *initStateArr, int width)
 {
 	int initStateInt;
 
@@ -66,19 +66,19 @@ int main()
 {	
 	int width = 20;
 
-	int initStateArr[width];
+	int generationArray[width];
 
 	for (int i = 0; i < width; i++)
 	{
 		initStateArr[i] = 0;
 	}
 
-	populateWithBinary(initStateArr, width);
+	setInitArrayBinary(generationArray, width);
 
 	printf("array = {");
 	for (int i = 0; i < width; ++i)
 	{
-		printf("%d, ", initStateArr[i]);
+		printf("%d, ", generationArray[i]);
 	}
 	printf("}\n");
 

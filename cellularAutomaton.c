@@ -32,6 +32,7 @@ int main()
 		} 
 		else if(userOptions == 2)
 		{
+			printf("\n");
 			userGeneration();
 			printf("\n");
 		}
@@ -210,7 +211,7 @@ void setWidht(int *pInt)
 	do
 	{
 		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-		printf ("Your terminal window can fit a grid without problem with width up to %d.\n", (w.ws_col/2));
+		printf ("Your terminal window can fit a grid with width up to %d without a problem.\n", (w.ws_col/2));
 		printf("Please enter width of a grid greater or equal to %d: ", 3);
 		scanf("%d", pInt);
 
@@ -284,7 +285,8 @@ void genPreset()
 
 	//prints the starting generation
 	printGeneration(generationArray, n);
-	saveAutomation(generationArray, n);
+	// TOTO
+	// saveAutomation(generationArray, n);
 
 	for (int i = 0; i < numGen; ++i)
 	{
@@ -296,7 +298,8 @@ void genPreset()
 		}
 		swap_arrays(generationArray, nextGen, n);
 		printGeneration(generationArray, n);
-		saveAutomation(generationArray, n);
+		// TODO
+		// saveAutomation(generationArray, n);
 	}
 }
 
@@ -314,18 +317,22 @@ void userGeneration()
 	//User Input
 	setRule(&ruleInteger);
 	setWidht(&width);	
-	setNumberOfGenerations(&numberGenerations);
-	printf("\n");
 
 
 	int generationArray[width];
 	int nextGen[width];
 
+	// init arrays to 0
 	for (int i = 0; i < width; i++)
 	{
 		generationArray[i] = 0;
 		nextGen[i] = 0;
 	}
+
+	setInitArrayBinary(generationArray, width);
+
+	setNumberOfGenerations(&numberGenerations);
+	printf("\n");
 
 	numberGenerations = numberGenerations -1;
 	//Get input for starting generation
@@ -333,20 +340,9 @@ void userGeneration()
 	//set rule
 	createRule(ruleSet, ruleInteger);
 
-	// if width is even
-	if (width % 2 == 0)
-	{
-		generationArray[width/2] = 1;
-		generationArray[(width/2)-1] = 1;
-	}
-	// if width is odd
-	else
-	{
-		generationArray[width/2] = 1;
-	}
-
 	printGeneration(generationArray, width);
-	saveAutomation(generationArray, width);
+	// TODO
+	// saveAutomation(generationArray, width);
 
 	for (int i = 0; i < numberGenerations; ++i)
 	{
@@ -358,35 +354,143 @@ void userGeneration()
 		}
 		swap_arrays(generationArray, nextGen, width);
 		printGeneration(generationArray, width);
-		saveAutomation(generationArray, width);
+		// TODO
+		// saveAutomation(generationArray, width);
 	}
 
 }
 
-//function which saves automation to a text file.
-int saveAutomation(int array[], int width[])	{
-    FILE *file;
-    file = fopen("savedAutomation.txt", "a");
-    char newLine = '\n';
+int power(int base, int exp)
+{
+    int result = 1;
+    while(exp) { result *= base; exp--; }
+    return result;
+}
 
-	if (array == NULL)	{
-		printf("ERROR");
+int getDecimalFromNLongBinary(int width)
+{
+	int output = 0;
+
+	for (int i = 0; i < width; i++)
+	{
+		output = output + power(2, i);
 	}
-	if (file != NULL)	{
-		for (int i = 0; i < width; ++i)
+
+	return output;
+}
+
+void getInitDecimal(int *pInt, int width)
+{
+	int maxInt = getDecimalFromNLongBinary(width);
+
+	do
+	{
+		printf("Please enter initial state as a DECIMAL between %d and %d: ", 0, maxInt);
+		scanf("%d", pInt);
+	} while ((*pInt < 0) || (*pInt > maxInt));
+
+	printf("You have set the initial state to be equal to %d\n", *pInt);
+}
+
+void setInitArrayBinary(int *generationArray, int width)
+{
+	char givePermission = '\0';
+
+	printf("Do you want to go with the default option and initialise only the middle elemet(s)?\n");	
+	do
+	{
+		printf("Continue default? [Y/n]: ");
+		scanf(" %c", &givePermission);
+
+		if (givePermission == 'Y')
 		{
-			if (array[i]==1)
-			{
-				fputs(XSQUARE, file);
-			}
-			else{
-				fputs(WSQUARE, file);
-			}
+			break;
 		}
-	fputc(newLine, file);
-	}	
-	
-    fclose(file);
+		else if (givePermission == 'N')
+		{
+			break;
+		}
+		else if (givePermission == 'n')
+		{
+			break;
+		}
+		else
+		{
+			givePermission = '\0';
+		}
+	} while (givePermission == '\0');
 
-    return 0;
+	if (givePermission == 'Y')
+	{
+		// if width is even
+		if (width % 2 == 0)
+		{
+			generationArray[width/2] = 1;
+			generationArray[(width/2)-1] = 1;
+		}
+		// if width is odd
+		else
+		{
+			generationArray[width/2] = 1;
+		}
+	}
+	else
+	{
+		int initDecimal;
+
+		getInitDecimal(&initDecimal, width);
+
+		int i;
+
+		for( i = 0; initDecimal > 0; i++)    
+		{    
+			generationArray[i] = initDecimal%2;    
+			initDecimal = initDecimal/2;    
+		}
+
+		printf("In BINARY of the given number is equal to ");   
+
+		for(i= i-1; i >= 0; i--)    
+		{    
+			printf("%d", generationArray[i]);    
+		}   
+
+		printf("\n");
+
+		printf("Thus, first generation will look like this: \n");
+
+		printGeneration(generationArray, width);
+	}
+
+
 }
+
+// TODO
+// //function which saves automation to a text file.
+// int saveAutomation(int array[], int width[])	
+// {
+//     FILE *file;
+//     file = fopen("savedAutomation.txt", "a");
+//     char newLine = '\n';
+
+// 	if (array == NULL)	{
+// 		printf("ERROR");
+// 	}
+// 	if (file != NULL)	{
+// 		for (int i = 0; i < width; ++i)
+// 		{
+// 			if (array[i]==1)
+// 			{
+// 				fputs(XSQUARE, file);
+// 			}
+// 			else{
+// 				fputs(WSQUARE, file);
+// 			}
+// 		}
+// 	fputc(newLine, file);
+// 	}	
+	
+//     fclose(file);
+
+//     return 0;
+// }
