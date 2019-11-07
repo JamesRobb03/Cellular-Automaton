@@ -284,6 +284,7 @@ void genPreset()
 
 	//prints the starting generation
 	printGeneration(generationArray, n);
+	saveAutomation(generationArray, n);
 
 	for (int i = 0; i < numGen; ++i)
 	{
@@ -295,6 +296,7 @@ void genPreset()
 		}
 		swap_arrays(generationArray, nextGen, n);
 		printGeneration(generationArray, n);
+		saveAutomation(generationArray, n);
 	}
 }
 
@@ -344,6 +346,7 @@ void userGeneration()
 	}
 
 	printGeneration(generationArray, width);
+	saveAutomation(generationArray, width);
 
 	for (int i = 0; i < numberGenerations; ++i)
 	{
@@ -355,6 +358,35 @@ void userGeneration()
 		}
 		swap_arrays(generationArray, nextGen, width);
 		printGeneration(generationArray, width);
+		saveAutomation(generationArray, width);
 	}
 
+}
+
+//function which saves automation to a text file.
+int saveAutomation(int array[], int width[])	{
+    FILE *file;
+    file = fopen("savedAutomation.txt", "a");
+    char newLine = '\n';
+
+	if (array == NULL)	{
+		printf("ERROR");
+	}
+	if (file != NULL)	{
+		for (int i = 0; i < width; ++i)
+		{
+			if (array[i]==1)
+			{
+				fputs(XSQUARE, file);
+			}
+			else{
+				fputs(WSQUARE, file);
+			}
+		}
+	fputc(newLine, file);
+	}	
+	
+    fclose(file);
+
+    return 0;
 }
