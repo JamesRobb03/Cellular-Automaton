@@ -29,7 +29,7 @@ int main()
 		{
 			genPreset();
 			printf("\n");
-		}
+		} 
 		else if(userOptions == 2)
 		{
 			userGeneration();

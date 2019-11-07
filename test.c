@@ -2,92 +2,85 @@
 #include <stdio.h>
 #include <unistd.h>
 
-
 #define XSQUARE "☒"
 #define WSQUARE "☐"
 
-void setRule(int *pInt)
+int power(int base, int exp)
 {
-	do
-	{
-		printf("Please enter rule between %d and %d: ", 0, 255);
-		scanf("%d", pInt);
-	} while ((*pInt < 0) || (*pInt > 255));
-
-	printf("You have set the rule to be equal to %d\n", *pInt);
+    int result = 1;
+    while(exp) { result *= base; exp--; }
+    return result;
 }
 
-void setWidht(int *pInt)
+int getDecimalFromNLongBinary(int width)
 {
-	struct winsize w;
+	int output = 0;
 
-	char givePermission = '\0';
-    
+	for (int i = 0; i < width; i++)
+	{
+		output = output + power(2, i);
+	}
+
+	return output;
+}
+
+void setInitState(int *pInt, int width)
+{
+	int maxInt = getDecimalFromNLongBinary(width);
+
 	do
 	{
-		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-		printf ("Your terminal window can fit a grid without problem with width up to %d.\n", (w.ws_col/2));
-		printf("Please enter width of a grid greater or equal to %d: ", 3);
+		printf("Please enter initial state as an integer between %d and %d: ", 0, maxInt);
 		scanf("%d", pInt);
+	} while ((*pInt < 0) || (*pInt > maxInt));
 
-		if (*pInt > (w.ws_col/2))
-		{
-			printf("[WARNING] Desired width of %d is greater than window's size!\n", *pInt);	
-			do
-			{
-				printf("Grid may not display properly. Continue? [Y/n]: ");
-				scanf(" %c", &givePermission);
+	printf("You have set the initial state to be equal to %d\n", *pInt);
+}
 
-				if (givePermission == 'Y')
-				{
-					break;
-				}
-				else if (givePermission == 'N')
-				{
-					break;
-				}
-				else if (givePermission == 'n')
-				{
-					break;
-				}
-				else
-				{
-					givePermission = '\0';
-				}
-			} while (givePermission == '\0');
-		}
-		else if ((*pInt >= 3) && (*pInt < (w.ws_col/2)))
-		{
-			givePermission = 'Y';
-		}
-		else
-		{
-			givePermission = '\0';
-		}
+void populateWithBinary(int *initStateArr, int width)
+{
+	int initStateInt;
 
+	setInitState(&initStateInt, width);
 
-	} while (givePermission != 'Y');
+	int i;
 
-	printf("You have set the width of the grid to be equal to %d\n", *pInt);
+	for( i = 0; initStateInt > 0; i++)    
+	{    
+		initStateArr[i] = initStateInt%2;    
+		initStateInt = initStateInt/2;    
+	}
+
+	printf("\nBinary of Given Number is=");   
+
+	for(i= i-1; i >= 0; i--)    
+	{    
+		printf("%d", initStateArr[i]);    
+	}   
+
+	printf("\n");
+
 }
 
 int main()
 {	
-	int ruleNum; 
+	int width = 20;
 
-	int rule[8] = {0};
+	int initStateArr[width];
 
-	setRule(&ruleNum);
+	for (int i = 0; i < width; i++)
+	{
+		initStateArr[i] = 0;
+	}
 
-	printf("\n");
+	populateWithBinary(initStateArr, width);
 
-	// print terminak widow width
-
-	int gridWidth;
-    
-	setWidht(&gridWidth);
-
-	printf("%d and %d\n", ruleNum, gridWidth);
+	printf("array = {");
+	for (int i = 0; i < width; ++i)
+	{
+		printf("%d, ", initStateArr[i]);
+	}
+	printf("}\n");
 
 	return 0;
 }
