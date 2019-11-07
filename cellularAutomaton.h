@@ -35,3 +35,16 @@ void genPreset();
 //user Generation
 void userGeneration();
 
+// //function which saves automation to a text file.
+// int saveAutomation(int array[], int width[]);
+
+int power(int base, int exp);
+
+int getDecimalFromNLongBinary(int width);
+
+void getInitDecimal(int *pInt, int width);
+
+void setInitArrayBinary(int *initStateArr, int width);
+
+
+
