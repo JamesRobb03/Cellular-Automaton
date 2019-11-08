@@ -6,6 +6,8 @@
 #define WSQUARE "\u2610"
 #define XSQUARE "\u2612"
 
+void logo();
+
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
 //basically just lots of if statements. must be a better way to do it.
 int compare(int rule[], int i, int array[], int width);
@@ -38,13 +40,13 @@ void userGeneration();
 // //function which saves automation to a text file.
 // int saveAutomation(int array[], int width[]);
 
-int power(int base, int exp);
+unsigned long long int power(int base, int exp);
 
-int getDecimalFromNLongBinary(int width);
+unsigned long long int getULLINTFromNLongBinary(int width);
 
-void getInitDecimal(int *pInt, int width);
+void getInitULLINT(unsigned long long int *pULLINT, int width);
 
-void setInitArrayBinary(int *initStateArr, int width);
+void setInitArrayBinary(int *generationArray, int *width);
 
 int saveAutomation(int array[], int width);
 
