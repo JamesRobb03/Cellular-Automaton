@@ -10,6 +10,7 @@ int main()
 	while(1){
 		printf("1.Generate preset automaton\n");
 		printf("2.Generate your own \n");
+		printf("3.Generate your own \n");
 		printf("0. Exit\n");
 		printf("Please enter a choice: ");
 		scanf("%d", &userOptions);
@@ -24,6 +25,12 @@ int main()
 			userGeneration();
 			printf("\n");
 		}
+		else if(userOptions == 3)
+		{
+			printf("\n");
+			displayHelp();
+			printf("\n");
+		}
 		else if (userOptions == 0)
 		{
 			break;
@@ -33,6 +40,17 @@ int main()
 		}
 	}
 	return 0;
+}
+
+void displayHelp()
+{
+	printf("HELP\n");
+	printf("Option 1: \n");
+	printf("This option prints out the default 1D cellular automaton\n");
+	printf("This uses Rule 30, has width 31, and displays 16 generations\n");
+	printf("\n")
+	printf("Option 2: \n");;
+	printf("This option allows the user to generate\n");
 }
 
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
