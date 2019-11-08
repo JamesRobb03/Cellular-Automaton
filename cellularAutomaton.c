@@ -2,12 +2,15 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+// we need this fro unsigned long long int ULLONG_MAX
+#include <limits.h>
 #include "cellularAutomaton.h"
 
 int main()
 {
 	int userOptions;
 	while(1){
+		logo();
 		printf("1.Generate preset automaton\n");
 		printf("2.Generate your own \n");
 		printf("0. Exit\n");
@@ -33,6 +36,17 @@ int main()
 		}
 	}
 	return 0;
+}
+
+void logo()
+{
+	printf("☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐\n");
+	printf("☐ ■ ☒ ☒ ☐ ☒ ☒ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☒ ☒ ☐ ☒ ☒ ☒ ☐\n");
+	printf("☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☒ ☐ ☒ ☐ ☒ ☐\n");
+	printf("☐ ☒ ☐ ☐ ☐ ☒ ☒ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☒ ☒ ☐ ☒ ☒ ☐ ☐\n");
+	printf("☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☐ ☒ ☐ ☒ ☐ ☐ ☐ ☒ ☐ ☒ ☐ ☒ ☐ ☒ ☐\n");
+	printf("☐ ☒ ☒ ☒ ☐ ☒ ☒ ☒ ☐ ☒ ☒ ☒ ☐ ☒ ☒ ☒ ☒ ☒ ☒ ☒ ☐ ☒ ☒ ☒ ☐ ☒ ☐ ☒ ☐ ☒ ☐ ☒ ☐\n");
+	printf("☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐ ☐\n");
 }
 
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
@@ -316,7 +330,7 @@ void userGeneration()
 		nextGen[i] = 0;
 	}
 
-	setInitArrayBinary(generationArray, width);
+	setInitArrayBinary(generationArray, &width);
 
 	setNumberOfGenerations(&numberGenerations);
 	printf("\n");
@@ -347,16 +361,16 @@ void userGeneration()
 
 }
 
-int power(int base, int exp)
+unsigned long long int power(int base, int exp)
 {
-    int result = 1;
+    unsigned long long int result = 1;
     while(exp) { result *= base; exp--; }
     return result;
 }
 
-int getDecimalFromNLongBinary(int width)
+unsigned long long int getULLINTFromNLongBinary(int width)
 {
-	int output = 0;
+	unsigned long long int output = 0;
 
 	for (int i = 0; i < width; i++)
 	{
@@ -366,24 +380,30 @@ int getDecimalFromNLongBinary(int width)
 	return output;
 }
 
-void getInitDecimal(int *pInt, int width)
+void getInitULLINT(unsigned long long int *pULLINT, int width)
 {
-	int maxInt = getDecimalFromNLongBinary(width);
+	unsigned long long int maxULLINT = getULLINTFromNLongBinary(width);
 
 	do
 	{
-		printf("Please enter initial state as a DECIMAL between %d and %d: ", 0, maxInt);
-		scanf("%d", pInt);
-	} while ((*pInt < 0) || (*pInt > maxInt));
+		printf("Please enter initial condition as a UNSIGNED LONG LONG INTEGER between %d and %lld: ", 0, maxULLINT);
+		scanf("%llu", pULLINT);
+	} while ((*pULLINT > maxULLINT));
 
-	printf("You have set the initial state to be equal to %d\n", *pInt);
+	printf("You have set the initial condition to be equal to %lld\n", *pULLINT);
 }
 
-void setInitArrayBinary(int *generationArray, int width)
+void setInitArrayBinary(int *generationArray, int *width)
 {
 	char givePermission = '\0';
+	
+	if ((*width) > 63)
+	{
+		printf("[WARNING] You have entered width greater that 63. \nNote that, if you decide NOT to use the default initial condition, the width will be set to 63 automatically. \nThat is because width greater that 63 cannot be set initial condition due to the limit of UNASIGNED LONG LONG INT.\n");
+	}
 
-	printf("Do you want to go with the default option and initialise only the middle elemet(s)?\n");	
+	printf("Do you want to go with the default initial condition and initialise only the middle elemet(s)?\n");
+
 	do
 	{
 		printf("Continue default? [Y/n]: ");
@@ -410,32 +430,39 @@ void setInitArrayBinary(int *generationArray, int width)
 	if (givePermission == 'Y')
 	{
 		// if width is even
-		if (width % 2 == 0)
+		if ((*width) % 2 == 0)
 		{
-			generationArray[width/2] = 1;
-			generationArray[(width/2)-1] = 1;
+			generationArray[(*width)/2] = 1;
+			generationArray[((*width)/2)-1] = 1;
 		}
 		// if width is odd
 		else
 		{
-			generationArray[width/2] = 1;
+			generationArray[(*width)/2] = 1;
 		}
 	}
+
 	else
 	{
-		int initDecimal;
+		if ((*width) > 63)
+		{
+			(*width) = 63;
+			printf("[NOTE] Width set automatically to 64.\n");
+		}
 
-		getInitDecimal(&initDecimal, width);
+		unsigned long long int initULLINT;
+
+		getInitULLINT(&initULLINT, *width);
 
 		int i;
 
-		for( i = 0; initDecimal > 0; i++)    
+		for( i = 0; initULLINT > 0; i++)    
 		{    
-			generationArray[i] = initDecimal%2;    
-			initDecimal = initDecimal/2;    
+			generationArray[i] = initULLINT%2;    
+			initULLINT = initULLINT/2;    
 		}
 
-		printf("In BINARY of the given number is equal to ");   
+		printf("In BINARY of the given ULLINT is equal to ");   
 
 		for(i= i-1; i >= 0; i--)    
 		{    
@@ -446,7 +473,7 @@ void setInitArrayBinary(int *generationArray, int width)
 
 		printf("Thus, first generation will look like this: \n");
 
-		printGeneration(generationArray, width);
+		printGeneration(generationArray, *width);
 	}
 
 
