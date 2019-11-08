@@ -52,9 +52,19 @@ void displayHelp()
 	printf("Option 1: \n");
 	printf("This option prints out the default 1D cellular automaton\n");
 	printf("This uses Rule 30, has width 31, and displays 16 generations\n");
-	printf("\n")
-	printf("Option 2: \n");;
-	printf("This option allows the user to generate\n");
+	printf("This option also saves the automaton to a file.\n");
+	printf("\n");
+	printf("Option 2: \n");
+	printf("This option allows the user to generate their own automaton by setting the rule, the width, the amount of generations and allows them to choose a starting generation\n");
+	printf("-A rule can be any number between 0 and 255\n");
+	printf("-Width can be any number greater than 3, however you will see a warning if your terminal window is too small to display the automaton properly however you can choose to ignore this warning if you wish.\n");
+	printf("-The amount of generations can be any number greater than 1\n");
+	printf("-You can choose to change the starting generation. However this only works with widths less than 64. This is due to the way the program sets the starting generation\n");	
+	printf("The program converts the width into a binary number where all elements in an array of length width is equal to 1.\n");
+	printf("for an example if width was set to 3. then the user would be asked for an input between 1 and 7. as 111 in binary is 7.\n");
+	printf("this means that when the width is greater than 64 the number stored is too big for memory.\n");
+	printf("so if the user wishes to still set the first generation the program automatically sets the width to 63 if the width was previously set to be greater.\n");
+	printf("\n");
 }
 
 void logo()
