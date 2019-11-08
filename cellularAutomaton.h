@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 
-#define WSQUARE "\u2610"
-#define XSQUARE "\u2612"
+#define WSQUARE "\u25A1"
+#define XSQUARE "\u25A3"
 
 void logo();
 
