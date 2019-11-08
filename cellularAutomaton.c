@@ -13,7 +13,7 @@ int main()
 	while(1){
 		printf("1.Generate preset automaton\n");
 		printf("2.Generate your own \n");
-		printf("3.Generate your own \n");
+		printf("3.Help\n");
 		printf("0. Exit\n");
 		printf("Please enter a choice: ");
 		scanf("%d", &userOptions);
