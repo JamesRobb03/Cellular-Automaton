@@ -8,6 +8,8 @@
 
 void logo();
 
+void displayHelp();
+
 //function used to compare 3 items in the generation array to the rule set. Returns an output of 1 or 0 depending on the rule
 //basically just lots of if statements. must be a better way to do it.
 int compare(int rule[], int i, int array[], int width);
