@@ -45,7 +45,7 @@ int main()
 	return 0;
 }
 
-
+//Function to display help to user
 void displayHelp()
 {
 	printf("HELP\n");
@@ -67,6 +67,7 @@ void displayHelp()
 	printf("\n");
 }
 
+//function to diplsay logo
 void logo()
 {
 	printf("□ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □ □\n");
@@ -122,6 +123,7 @@ int compare(int rule[], int i, int array[], int width)
 
 	//printf("%d %d %d :", compArray[0], compArray[1], compArray[2]);
 
+	//uses memcmp to compare arrays of integers
 	if (memcmp(c1, compArray, sizeof(c1))==0)
 	{
 		return rule[0];
@@ -217,6 +219,7 @@ void print(int array[])
 	}
 }
 
+//function which gets valid rule number
 void setRule(int *pInt)
 {
 	do
@@ -228,6 +231,7 @@ void setRule(int *pInt)
 	printf("You have set the rule to be equal to %d\n", *pInt);
 }
 
+//function which gets valid input for number of generations
 void setNumberOfGenerations(int *pInt)
 {
 	do
@@ -239,6 +243,7 @@ void setNumberOfGenerations(int *pInt)
 	printf("You have set the number of generations to be equal to %d\n", *pInt);
 }
 
+//function which is used to get a valid width
 void setWidht(int *pInt)
 {
 	struct winsize w;
@@ -294,6 +299,7 @@ void setWidht(int *pInt)
 }
 
 //Preset generation
+//function which prints and saves the preset generation
 void genPreset()
 {
 	printf("\n");
@@ -342,6 +348,8 @@ void genPreset()
 
 
 //user Generation
+//function which allows user to create there own cellular automata
+//allows them to set all variables.
 void userGeneration()
 {
 	//Starter variables.
